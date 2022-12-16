@@ -25,14 +25,21 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $user->setPassword($hasher->hashPassword($user, $user->getPassword()));
+            $picture=$form->get('photo')->getData();
 
-            $manager->persist($user);
-            $manager->flush();
-            $this->addFlash('success', 'Félicitation, vous êtes inscrit, connectez-vous à présent');
+            if($picture){
+                $picture_bdd = date('YmDHis').uniqid().$picture->getClientOriginalName();
+                $picture->move($this->getParameter('upload_directory'),$picture_bdd);
+                $user->setPassword($hasher->hashPassword($user, $user->getPassword()));
+                $user->setPhoto($picture_bdd);
 
-            return $this->redirectToRoute('login');
+                $manager->persist($user);
+                $manager->flush();
+                $this->addFlash('success', 'Félicitation, vous êtes inscrit, connectez-vous à présent');
 
+                return $this->redirectToRoute('login');
+
+            }
         }
 
 

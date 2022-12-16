@@ -35,13 +35,7 @@ class EditPrestationType extends AbstractType
                 ]
             ])
 
-            ->add('duration',TextType::class,[
-                'label'=> 'la durée de votre prestation',
-                'required'=>false,
-                'attr'=>[
-                    'placeholder'=>'Saisissez la durée de votre prestation'
-                ]
-            ])
+
             ->add('editPhoto', FileType::class,[
                 'label'=>'Edit Photo',
                 'required'=>false,
@@ -59,10 +53,15 @@ class EditPrestationType extends AbstractType
                     ])
                 ]
             ])
-            ->add('date',DateType::class,[
+            ->add('dateDebut',DateType::class,[
                 'widget' => 'choice',
 
             ])
+            ->add('dateFin',DateType::class,[
+                'widget' => 'choice',
+
+            ])
+
             ->add('prix', NumberType::class,[
                 'label'=>'Prix de votre prestation',
                 'required'=>false,

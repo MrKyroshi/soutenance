@@ -144,9 +144,7 @@ class BackController extends AbstractController
     #[Route('/gestionAvis', name: 'gestionAvis')]
     public function gestionAvis(AvisRepository $avisRepository,UserRepository $userRepository): Response
     {
-        $aviss=$avisRepository->findBy([
-            'user'=>$this->getUser()
-        ]);
+        $aviss=$avisRepository;
         return $this->render('back/gestionAvis.html.twig', [
             'aviss'=>$aviss
 

@@ -5,8 +5,9 @@
 {% endblock %}
 
 {% block body %}
-    <div  class="card col-md-4 m-4 p-0 rounded border-success mb-3" style="max-width: 20rem;">
-        <img height="200" src="{{ asset('upload/')~product.photo }}" alt="">
+    <div class="row justify-content-center">
+    <div  class="card col-md-4  m-4  p-0 rounded border-success mb-3" style="width: 80%;">
+        <img style="width: 80% height="200" src="{{ asset('upload/')~product.photo }}" alt="">
         <div class="card-header ">Prestation :{{  product.title  }}</div>
         <div class="card-header ">Prestataire :{{  product.user.firstname }}</div>
         <div class="card-body">
@@ -26,11 +27,11 @@
                 </div>
 
         </div>
-        <a href="" class="btn btn-info">Réserver</a>
+        <a href="{{ path('ajoutPanier', {'id': product.id}) }}" class="btn btn-info">Réserver</a>
 
     </div>
 
-
+    </div>
 
 
     </div>
