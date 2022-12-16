@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ parent() }} description
+{% endblock %}
+
+{% block body %}
+    <div  class="card col-md-4 m-4 p-0 rounded border-success mb-3" style="max-width: 20rem;">
+        <img height="200" src="{{ asset('upload/')~product.photo }}" alt="">
+        <div class="card-header ">Prestation :{{  product.title  }}</div>
+        <div class="card-header ">Prestataire :{{  product.user.firstname }}</div>
+        <div class="card-body">
+            <h4 class="card-title">{{  product.prix  }}€</h4>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            Description
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+                        <div class="accordion-body">
+                            {{ product.description  | default('Aucune description pour ce produit') }}
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <a href="" class="btn btn-info">Réserver</a>
+
+    </div>
+
+
+
+
+    </div>
+{% endblock %}
+
+

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {{ parent ()}} Accueil
+{% endblock %}
+
+
+{% block body %}
+    <div class="row justify-content-evenly">
+
+
+        {% for prestation in prestations %}
+            <div class="card col-md-4 m-4 p-0 rounded border-success mb-3" style="max-width: 20rem;">
+                <img height="200" src="{{ asset('upload/')~prestation.photo }}" alt="">
+                <div  class="card-header  ">Prestation: {{  prestation.title  }}</div>
+                <div class="card-header ">Prestataire: {{  prestation.user.firstname }}</div>
+                <div class="card-header ">Lieu: {{ prestation.ville }}</div>
+                <div class="card-header ">Date de debut : {{ prestation.dateDebut | date}}</div>
+                <div class="card-header ">Date de fin : {{ prestation.dateFin | date}}</div>
+                <div class="card-body">
+                    <h4 class="card-title">Prix : {{  prestation.prix  }}€</h4>
+
+                    <div class="nav-item dropdown ms-5 ms-3">
+
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Découvir notre voyage !!!</a>
+                        <div class="dropdown-menu">
+
+
+                            <a class="dropdown-item" href="{{ path('affiDescription', {'id': prestation.id}) }}">Notre progamme détaillé</a>
+
+
+
+                            <a class="dropdown-item" href="{{ path('ajoutAvis', {'id': prestation.id}) }}">Laisser un avis</a>
+
+
+
+                            <a class="dropdown-item" href="{{ path('affichageAvis') }}">Nos avis</a>
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <a href="" class="btn btn-info">Réserver</a>
+
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
+
+
+

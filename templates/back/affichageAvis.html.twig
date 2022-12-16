@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} gestion des avis
+{% endblock %}
+
+
+
+{% block body %}
+    <table class="table table-success table-striped mt-5">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">User</th>
+            <th scope="col">Note</th>
+            <th scope="col">Commentaire</th>
+            <th scope="col">Date</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for avis in aviss %}
+
+
+            <tr>
+                <th scope="row">{{  avis.id  }}</th>
+                <td>{{  avis.product.user.id}}</td>
+                <td>{{  avis.note  }}</td>
+                <td>{{  avis.commentaire }}</td>
+                <td>{{  avis.date | date('d/m/Y') }}</td>
+
+
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+
+

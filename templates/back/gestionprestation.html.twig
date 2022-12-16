@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}Gestion prestations
+{% endblock %}
+
+{% block body %}
+
+    <table class="table table-primary table-striped">
+        <thead>
+
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Titre</th>
+            <th scope="col">Categorie</th>
+            <th scope="col">Date de debut</th>
+            <th scope="col">Date de fin</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Actions</th>
+        </tr>
+
+        </thead>
+        <testation
+
+        {% for prestation in prestations %}
+            <tr>
+                <th scope="row">{{ prestation.id }}</th>
+                <td>{{ prestation.title }}</td>
+                <td>{{ prestation.category|  default('<span style="color:red;">Aucune catégorie affiliée</span>') |upper  | raw }}</td>
+                <td>{{ prestation.dateDebut| date | default('<span style="color:red;">Aucun date affiliée</span>') |upper  | raw }}</td>
+                <td>{{ prestation.dateFin| date | default('<span style="color:red;">Aucun date affiliée</span>') |upper  | raw }}</td>
+                <td>{{ prestation.prix }}€</td>
+                <td><img src="{{ asset('upload/')~prestation.photo }}" width="100" alt=""></td>
+                <td><a href="{{ path('editprestation', {'id': prestation.id}) }}" class="btn btn-info">Modifier</a>
+                    <a href="{{ path('deletePrestation', {'id': prestation.id}) }}" onclick="return confirm('Etes-vous sûr?')" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+
