@@ -118,24 +118,35 @@ class BackController extends AbstractController
 
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/ajoutAvis/{id}', name: 'ajoutAvis')]
-    public function ajoutAvis(ProductRepository $productRepository ,Request $request,EntityManagerInterface $manager,$id=null): Response
+    public function ajoutAvis(AvisRepository $avisRepository ,ProductRepository $productRepository ,Request $request,EntityManagerInterface $manager,$id=null): Response
     {
-        $avis = new Avis();
 
+        $avis= $avisRepository->findBy([
+            'user'=>$this->getUser(),
+            'product'=>$productRepository->find($id)
+        ]);
 
-        $form =$this->createForm(AvisType::class,$avis);
-        $form->handleRequest($request);
+   if (!$avis){
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $avis->setDate(new \DateTime());
-            $avis->setUser($this->getUser());
-            $avis->setProduct($productRepository->find($id));
-            $manager->persist($avis);
-            $manager->flush();
-            $this->addFlash('succes','Merci votre conmentaire');
-            return $this->redirectToRoute('gestionAvis');
-        }
+       $avis = new Avis();
+
+       $form =$this->createForm(AvisType::class,$avis);
+       $form->handleRequest($request);
+
+       if ($form->isSubmitted() && $form->isValid()) {
+           $avis->setDate(new \DateTime());
+           $avis->setUser($this->getUser());
+           $avis->setProduct($productRepository->find($id));
+           $manager->persist($avis);
+           $manager->flush();
+           $this->addFlash('success', 'Merci votre conmentaire');
+           return $this->redirectToRoute('gestionAvis');
+       }
+
+   }else{
+           $this->addFlash('success','avid déja deposé');
+           return $this->redirectToRoute('home');
+   }
 
 
         return $this->render('back/ajoutAvis.html.twig', [
