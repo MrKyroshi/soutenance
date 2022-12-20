@@ -13,14 +13,16 @@ use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class BackController extends AbstractController
 {
-
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
    #[Route('/ajoutprestation', name: 'ajoutprestation')]
    public function ajoutProduit(Request $request, EntityManagerInterface $manager): Response
    {
@@ -52,7 +54,7 @@ class BackController extends AbstractController
        }
 
 
-
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/gestionprestation', name: 'gestionprestation')]
     public function gestionprestation(ProductRepository $productRepository): Response
     {
@@ -66,7 +68,7 @@ class BackController extends AbstractController
         ]);
     }
 
-
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/editprestation/{id}', name: 'editprestation')]
     public function editPrestation(Product $product, Request $request, EntityManagerInterface $manager): Response
     {
@@ -102,7 +104,7 @@ class BackController extends AbstractController
             'product' => $product
         ]);
     }
-
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/deletePrestation/{id}', name: 'deletePrestation')]
     public function deletePrestation(Product $product, EntityManagerInterface $manager): Response
     {
@@ -114,7 +116,7 @@ class BackController extends AbstractController
         return $this->redirectToRoute('gestionprestation');
     }
 
-
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/ajoutAvis/{id}', name: 'ajoutAvis')]
     public function ajoutAvis(ProductRepository $productRepository ,Request $request,EntityManagerInterface $manager,$id=null): Response
     {
@@ -128,10 +130,7 @@ class BackController extends AbstractController
         {
             $avis->setDate(new \DateTime());
             $avis->setUser($this->getUser());
-            $avis->setProduct($productRepository->findBy
-            ([
-                'user'=>$this->getUser()
-            ])) ;
+            $avis->setProduct($productRepository->find($id));
             $manager->persist($avis);
             $manager->flush();
             $this->addFlash('succes','Merci votre conmentaire');
@@ -143,7 +142,7 @@ class BackController extends AbstractController
             'form'=>$form->createView()
         ]);
     }
-
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/gestionAvis', name: 'gestionAvis')]
     public function gestionAvis(AvisRepository $avisRepository,UserRepository $userRepository): Response
     {
@@ -153,7 +152,7 @@ class BackController extends AbstractController
 
         ]);
     }
-
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/editAvis/{id}', name: 'editAvis')]
     public function editAvis(AvisRepository $avisRepository , EntityManagerInterface $manager ,Request $request ,$id): Response
     {
@@ -173,7 +172,7 @@ class BackController extends AbstractController
 
         ]);
     }
-
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/deleteAvis/{id}', name: 'deleteAvis')]
     public function deleteAvis(AvisRepository $avisRepository,EntityManagerInterface $manager,$id): Response
     {
