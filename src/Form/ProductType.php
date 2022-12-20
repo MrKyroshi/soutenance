@@ -7,6 +7,7 @@ use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -14,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use function Sodium\add;
 
 class ProductType extends AbstractType
 {
@@ -72,6 +74,13 @@ class ProductType extends AbstractType
                 'required'=>false,
                 'attr'=>[
                     'placeholder'=>'Saisissez le prix de votre prestation'
+                ]
+            ])
+            ->add('participant',IntegerType::class,[
+                'label'=>'Nombre de participant',
+                'required'=>false,
+                'attr'=>[
+                    'placeholder'=>'Nombre participant'
                 ]
             ])
             ->add('ville', TextType::class,[

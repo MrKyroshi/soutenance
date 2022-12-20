@@ -23,7 +23,8 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
+
+        if ($form->isSubmitted()&&  $form->isValid())
         {
             $picture=$form->get('photo')->getData();
 
@@ -40,6 +41,9 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('login');
 
             }
+        }else{
+
+            $this->redirectToRoute('register');
         }
 
 

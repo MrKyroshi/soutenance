@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -16,45 +19,57 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'Veuillez remplir ce champ')]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[Assert\NotBlank(message: 'Veuillez remplir ce champ')]
     #[ORM\Column(length: 255)]
     private ?string $category = null;
 
-
-
+    #[Assert\NotBlank(message: 'Veuillez remplir ce champ')]
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
 
-
+    #[Assert\NotBlank(message: 'Veuillez remplir ce champ')]
     #[ORM\Column]
     private ?int $prix = null;
 
     public $editPhoto;
 
-
+    #[Assert\NotBlank(message: 'Veuillez remplir ce champ')]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'product')]
     private ?User $user = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateDebut = null;
+    #[Assert\NotBlank(message: 'Veuillez remplir ce champ')]
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateFin = null;
+    #[Assert\NotBlank(message: 'Veuillez remplir ce champ')]
 
     #[ORM\Column(length: 255)]
     private ?string $ville = null;
+    #[Assert\NotBlank(message: 'Veuillez remplir ce champ')]
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Avis::class)]
     private Collection $avis;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Achat::class)]
+    private Collection $achats;
+
+    #[ORM\Column]
+    private ?int $participant = null;
+
     public function __construct()
     {
         $this->avis = new ArrayCollection();
+        $this->achats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,6 +217,48 @@ class Product
                 $avi->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Achat>
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Achat $achat): self
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats->add($achat);
+            $achat->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): self
+    {
+        if ($this->achats->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getProduit() === $this) {
+                $achat->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getParticipant(): ?int
+    {
+        return $this->participant;
+    }
+
+    public function setParticipant(int $participant): self
+    {
+        $this->participant = $participant;
 
         return $this;
     }

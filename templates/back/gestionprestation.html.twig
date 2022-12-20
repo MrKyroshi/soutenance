@@ -15,6 +15,7 @@
             <th scope="col">Categorie</th>
             <th scope="col">Date de debut</th>
             <th scope="col">Date de fin</th>
+            <th scope="col">Quantité</th>
             <th scope="col">Prix</th>
             <th scope="col">Photo</th>
             <th scope="col">Actions</th>
@@ -30,6 +31,7 @@
                 <td>{{ prestation.category|  default('<span style="color:red;">Aucune catégorie affiliée</span>') |upper  | raw }}</td>
                 <td>{{ prestation.dateDebut| date | default('<span style="color:red;">Aucun date affiliée</span>') |upper  | raw }}</td>
                 <td>{{ prestation.dateFin| date | default('<span style="color:red;">Aucun date affiliée</span>') |upper  | raw }}</td>
+                <td>{{ prestation.participant }}</td>
                 <td>{{ prestation.prix }}€</td>
                 <td><img src="{{ asset('upload/')~prestation.photo }}" width="100" alt=""></td>
                 <td><a href="{{ path('editprestation', {'id': prestation.id}) }}" class="btn btn-info">Modifier</a>

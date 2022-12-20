@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Achat;
+use App\Entity\Commande;
 use App\Repository\ProductRepository;
 use App\Service\PanierService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,5 +76,44 @@ class FrontController extends AbstractController
 
         ]);
     }
+
+    #[Route('/commande', name: 'commande')]
+    public function commande(ProductRepository $productRepository ,EntityManagerInterface $manager, PanierService $panierService): Response
+    {
+
+            $panier = $panierService->getFullPanier();
+            $commande = new Commande();
+            $commande->setUtilisateur($this->getUser());
+            $commande->setDate(new \DateTime());
+
+            foreach ($panier as $item) {
+                if ($item['produit']->getParticipant() >=  $item['quantite']) {
+                $achat = new Achat();
+                $achat->setProduit($item['produit']);
+                $achat->setCommande($commande);
+                $achat->setQuantite($item['quantite']);
+                $item['produit']->setParticipant($item['produit']->getParticipant() - $item['quantite']);
+
+
+                $manager->persist($achat);
+                $manager->persist($item['produit']);}
+                else {
+
+                        $this->addFlash('success','Quantité maximun est dépassé !!!');
+                        return $this->redirectToRoute('panier');
+
+                    }
+
+            }
+            $panierService->destroy();
+            $manager->persist($commande);
+            $manager->flush();
+
+
+        $this->addFlash('success', 'Merci pour votre commande');
+
+        return $this->redirectToRoute('home');
+    }
+
 
 }

@@ -9,11 +9,16 @@
 
 
         {% for prestation in prestations %}
+
+            {% if not prestation.participant <= 0 %}
+
+
             <div class="card col-md-4 m-4 p-0 rounded border-success mb-3" style="max-width: 20rem;">
                 <img height="200" src="{{ asset('upload/')~prestation.photo }}" alt="">
                 <div  class="card-header  ">Prestation: {{  prestation.title  }}</div>
                 <div class="card-header ">Prestataire: {{  prestation.user.firstname }}</div>
                 <div class="card-header ">Lieu: {{ prestation.ville }}</div>
+                <div class="card-header ">Nombre participant :{{ prestation.participant }}</div>
                 <div class="card-header ">Date de debut : {{ prestation.dateDebut | date}}</div>
                 <div class="card-header ">Date de fin : {{ prestation.dateFin | date}}</div>
                 <div class="card-body">
@@ -33,7 +38,7 @@
 
 
 
-                            <a class="dropdown-item" href="{{ path('affichageAvis') }}">Nos avis</a>
+                            <a class="dropdown-item" href="{{ path('affichageAvis',{'id':prestation.id}) }}">Nos avis</a>
 
 
 
@@ -41,9 +46,18 @@
                     </div>
 
                 </div>
+
+
+
+
+
                 <a href="{{ path('ajoutPanier', {'id': prestation.id}) }}" class="btn btn-info">Réserver</a>
 
             </div>
+
+
+        {% endif %}
+
         {% endfor %}
 
     </div>

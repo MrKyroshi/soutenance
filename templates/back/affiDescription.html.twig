@@ -10,8 +10,9 @@
         <img style="width: 80% height="200" src="{{ asset('upload/')~product.photo }}" alt="">
         <div class="card-header ">Prestation :{{  product.title  }}</div>
         <div class="card-header ">Prestataire :{{  product.user.firstname }}</div>
+        <div class="card-header ">Nombre participants :{{  product.participant }}</div>
         <div class="card-body">
-            <h4 class="card-title">{{  product.prix  }}€</h4>
+            <h4 class="card-title">Prix :{{  product.prix  }}€</h4>
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">

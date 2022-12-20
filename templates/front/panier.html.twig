@@ -14,6 +14,7 @@
             <th scope="col"><span class="btn btn-secondary">-</span></th>
             <th scope="col">Quantité</th>
             <th scope="col"><span class="btn btn-secondary">+</span></th>
+            <th scope="col">Quantité Maximun</th>
             <th scope="col">annuler</th>
         </tr>
 
@@ -32,6 +33,7 @@
             </td>
             <td>{{ item.quantite }}</td>
             <td><a href="{{ path('ajoutPanier', {'id': item.produit.id}) }}" class="btn btn-info">+</a></td>
+            <td>{{ item.produit.participant }}</td>
             <td><a href="{{ path('supprimer', {'id': item.produit.id}) }}" class="btn btn-warning">Annuler</a></td>
         </tr>
 
@@ -42,7 +44,7 @@
     <p><h2>Montant total:</h2>{{ total }}</p>
 
     <a href="{{ path('destroy') }}" class="btn btn-danger">vider panier</a>
-    <a href="" class="btn btn-danger">Commander</a>
+    <a href="{{ path('commande') }}" class="btn btn-danger">Commander</a>
 
 {% endblock %}
 

@@ -128,7 +128,10 @@ class BackController extends AbstractController
         {
             $avis->setDate(new \DateTime());
             $avis->setUser($this->getUser());
-            $avis->setProduct($productRepository->find($id));
+            $avis->setProduct($productRepository->findBy
+            ([
+                'user'=>$this->getUser()
+            ])) ;
             $manager->persist($avis);
             $manager->flush();
             $this->addFlash('succes','Merci votre conmentaire');
@@ -144,7 +147,7 @@ class BackController extends AbstractController
     #[Route('/gestionAvis', name: 'gestionAvis')]
     public function gestionAvis(AvisRepository $avisRepository,UserRepository $userRepository): Response
     {
-        $aviss=$avisRepository;
+        $aviss=$avisRepository->findBy(['user'=>$this->getUser()]);
         return $this->render('back/gestionAvis.html.twig', [
             'aviss'=>$aviss
 
@@ -184,10 +187,12 @@ class BackController extends AbstractController
     }
 
          #[Route('/affichageAvis/{id}', name: 'affichageAvis')]
-             public function affichageAvis(AvisRepository $avisRepository,UserRepository $userRepository , $id=null): Response
+             public function affichageAvis(AvisRepository $avisRepository,ProductRepository $productRepository , $id=null): Response
              {
+                 $prestation=$productRepository->find($id);
                  $aviss=$avisRepository->findBy([
-                     'user'=>$this->getUser()
+                     'product'=>$prestation
+
                  ]);
 
                  return $this->render('back/affichageAvis.html.twig', [

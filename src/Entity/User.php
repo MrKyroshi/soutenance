@@ -32,41 +32,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\EqualTo(propertyPath: 'password', message: 'Les mots de passe ne correspondent pas')]
     public ?string $confirmPassword =null;
 
+    #[Assert\NotBlank(message: 'email obliger')]
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[Assert\NotBlank(message: 'mot de pass obliger')]
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[Assert\NotBlank(message: 'Saisi votre numéro téléphone')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tel = null;
+
 
     #[ORM\Column]
     private array $roles = ['ROLE_USER'];
 
+    #[Assert\NotBlank(message: 'Adresse obligé')]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
+
+    #[Assert\NotBlank(message: 'saisi votre code postal')]
     #[ORM\Column]
     private ?int $cp = null;
+
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Product::class)]
     private Collection $product;
 
+    #[Assert\NotBlank(message: 'Saisi votre ville')]
     #[ORM\Column(length: 255)]
     private ?string $ville = null;
 
+
+    #[Assert\NotBlank(message: 'votre numéro domicile')]
     #[ORM\Column(length: 255)]
     private ?string $numero = null;
 
+
+    #[Assert\NotBlank(message: 'saisi votre voie')]
     #[ORM\Column(length: 255)]
     private ?string $voie = null;
+
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Avis::class)]
     private Collection $avis;
 
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
+
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Commande::class)]
+    private Collection $commandes;
 
 
 
@@ -76,6 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->product = new ArrayCollection();
         $this->Avis = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
 
     }
 
@@ -299,6 +317,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): self
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): self
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getUtilisateur() === $this) {
+                $commande->setUtilisateur(null);
+            }
+        }
 
         return $this;
     }
